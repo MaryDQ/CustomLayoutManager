@@ -13,6 +13,10 @@ import kotlin.math.abs
 class CustomLayoutManager(@IntRange(from = 0, to = 1) val orientation: Int) :
     RecyclerView.LayoutManager(),
     ScrollVectorProvider {
+
+    //当前即将要绘制的view的索引
+    private var mCurrentPosition = 0
+
     private var mPendingPosition = RecyclerView.NO_POSITION
 
     override fun generateDefaultLayoutParams(): RecyclerView.LayoutParams {
@@ -358,10 +362,10 @@ class CustomLayoutManager(@IntRange(from = 0, to = 1) val orientation: Int) :
             }
 
             if (fillPosition in 0 until itemCount) {
-                if (orientationIsHorizontal()) {
-                    availableSpace -= getDecoratedMeasuredWidth(view)
+                availableSpace -= if (orientationIsHorizontal()) {
+                    getDecoratedMeasuredWidth(view)
                 } else {
-                    availableSpace -= getDecoratedMeasuredHeight(view)
+                    getDecoratedMeasuredHeight(view)
                 }
             }
         }
